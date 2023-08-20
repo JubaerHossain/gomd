@@ -2,7 +2,6 @@ package command
 
 import (
 	"errors"
-	"log"
 	"path"
 	"runtime"
 	"strings"
@@ -18,7 +17,7 @@ const (
 	ModelsDir      = "models"
 	RoutesDir      = "routes"
 	ServicesDir    = "services"
-	RepositoryDir  = "repository"
+	ValidationDir  = "validation"
 	TemplateDir    = "template"
 )
 
@@ -48,7 +47,7 @@ func Run(cmd *cobra.Command, args []string) error {
 }
 
 func createFolders(fs afero.Fs, name string) error {
-	dirs := []string{ControllersDir, ModelsDir, RoutesDir, ServicesDir, RepositoryDir}
+	dirs := []string{ControllersDir, ModelsDir, RoutesDir, ServicesDir, ValidationDir}
 	for _, dir := range dirs {
 		if err := fs.Mkdir(path.Join(name, dir), 0755); err != nil {
 			return err
@@ -61,7 +60,7 @@ func createFiles(fs afero.Fs, name string) error {
 	createFile(fs, name, path.Join(TemplateDir, "controller.stub"), path.Join(name, ControllersDir, name+"_controller.go"))
 	createFile(fs, name, path.Join(TemplateDir, "model.stub"), path.Join(name, ModelsDir, name+".go"))
 	createFile(fs, name, path.Join(TemplateDir, "route.stub"), path.Join(name, RoutesDir, "api.go"))
-	createFile(fs, name, path.Join(TemplateDir, "repository.stub"), path.Join(name, "repository", name+"_repository.go"))
+	createFile(fs, name, path.Join(TemplateDir, "validation.stub"), path.Join(name, "validation", name+"_validation.go"))
 	createFile(fs, name, path.Join(TemplateDir, "service.stub"), path.Join(name, ServicesDir, name+"_service.go"))
 	return nil
 }
@@ -123,10 +122,4 @@ func Lower(name string) string {
 
 func Title(name string) string {
 	return strings.Title(Lower(name))
-}
-
-func main() {
-	if err := CLI.Execute(); err != nil {
-		log.Fatal(err)
-	}
 }

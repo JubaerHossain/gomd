@@ -1,4 +1,4 @@
-package command
+package cli
 
 import (
 	"errors"
@@ -24,7 +24,7 @@ const (
 
 var AppName string
 
-var CLI = &cobra.Command{
+var Create = &cobra.Command{
 	Use:  "create",
 	Args: cobra.MinimumNArgs(2),
 	RunE: Run,

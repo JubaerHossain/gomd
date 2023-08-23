@@ -1,9 +1,9 @@
-package main
+package gomd
 
 import (
 	"fmt"
 
-	"github.com/JubaerHossain/gomd/command"
+	"github.com/JubaerHossain/gomd/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -18,22 +18,22 @@ var asciiArt = `
 `
 
 // Create a Cobra command for gomd
-var cmd = &cobra.Command{
+var command = &cobra.Command{
 	Use:   "gomd",
 	Short: asciiArt,
 }
 
-func AddCommand(cmd *cobra.Command) {
-	cmd.AddCommand(cmd)
+func AddCommand(command *cobra.Command) {
+	command.AddCommand(command)
 }
 
 func init() {
-	cmd.AddCommand(command.CLI)
+	command.AddCommand(cli.Create)
 }
 
 // run is the main function to execute the gomd command
-func main() {
-	err := cmd.Execute()
+func Run() {
+	err := command.Execute()
 	if err != nil {
 		fmt.Println("execute error: ", err.Error())
 	}

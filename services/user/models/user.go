@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-var {{TitleName}}Collection gomd.MongoCollection
+var UserCollection gomd.MongoCollection
 
-type {{TitleName}} struct {
+type User struct {
 	Id        primitive.ObjectID `json:"id,omitempty" bson:"_id"`
     Task      string             `json:"task" bson:"task"`
     Status    string             `json:"status" bson:"status"`
@@ -16,6 +16,6 @@ type {{TitleName}} struct {
     UpdatedAt time.Time          `json:"updated_at,omitempty" bson:"updated_at"`
 }
 
-func {{TitleName}}Setup() {
-	{{TitleName}}Collection = gomd.Mongo.Collection("{{PluralLowerName}}")
+func UserSetup() {
+	UserCollection = gomd.Mongo.Collection("users")
 }

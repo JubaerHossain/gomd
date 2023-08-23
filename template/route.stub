@@ -1,12 +1,12 @@
 package routes
 
 import (
-	. "github.com/shipu/artifact"
-	c "{{PackageName}}/{{PackageRoot}}/{{SingularLowerName}}/controllers"
+	"github.com/JubaerHossain/gomd/gomd"
+	c "{{AppName}}/{{AppRoot}}/{{SingularLowerName}}/controllers"
 )
 
 func {{TitleName}}Setup() {
-    v1 := Router.Group("api/v1")
+    v1 := gomd.Router.Group("api/v1")
 	v1.GET("{{PluralLowerName}}", c.{{TitleName}}Index())
 	v1.POST("{{PluralLowerName}}", c.{{TitleName}}Create())
 	v1.GET("{{PluralLowerName}}/:{{SingularLowerName}}Id", c.{{TitleName}}Show())

@@ -3,8 +3,8 @@ package services
 import (
 	"fmt"
 	pagination "github.com/gobeam/mongo-go-pagination"
-	"{{PackageName}}/{{PackageRoot}}/{{SingularLowerName}}/dto"
-	"{{PackageName}}/{{PackageRoot}}/{{SingularLowerName}}/models"
+	"{{AppName}}/{{AppRoot}}/{{SingularLowerName}}/validation"
+	"{{AppName}}/{{AppRoot}}/{{SingularLowerName}}/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -39,11 +39,11 @@ func All{{TitleName}}(requestFilter map[string]interface{}) ([]models.{{TitleNam
 	return {{PluralLowerName}}, paginatedData.Pagination
 }
 
-func CreateA{{TitleName}}(create{{TitleName}}Dto dto.Create{{TitleName}}Request) models.{{TitleName}} {
+func CreateA{{TitleName}}(create{{TitleName}} validation.Create{{TitleName}}Request) models.{{TitleName}} {
 	{{SingularLowerName}} := models.{{TitleName}}{
 		Id:                 primitive.NewObjectID(),
-		Task:               create{{TitleName}}Dto.Task,
-		Status:             create{{TitleName}}Dto.Status,
+		Task:               create{{TitleName}}.Task,
+		Status:             create{{TitleName}}.Status,
 		CreatedAt:          time.Now(),
 		UpdatedAt:          time.Now(),
 	}
@@ -56,7 +56,7 @@ func CreateA{{TitleName}}(create{{TitleName}}Dto dto.Create{{TitleName}}Request)
 	return {{SingularLowerName}}
 }
 
-func UpdateA{{TitleName}}({{SingularLowerName}}Id string, update{{TitleName}}Dto dto.Update{{TitleName}}Request) (models.{{TitleName}}, error) {
+func UpdateA{{TitleName}}({{SingularLowerName}}Id string, update{{TitleName}} validation.Update{{TitleName}}Request) (models.{{TitleName}}, error) {
 
 	objId, _ := primitive.ObjectIDFromHex({{SingularLowerName}}Id)
 
@@ -71,8 +71,8 @@ func UpdateA{{TitleName}}({{SingularLowerName}}Id string, update{{TitleName}}Dto
 		bson.M{"_id": objId},
 		bson.D{
 			{"$set", bson.M{
-				"task":                update{{TitleName}}Dto.Task,
-				"status":              update{{TitleName}}Dto.Status,
+				"task":                update{{TitleName}}.Task,
+				"status":              update{{TitleName}}.Status,
 				"updated_at":          time.Now(),
 			}},
 		},

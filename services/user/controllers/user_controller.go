@@ -3,11 +3,11 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/JubaerHossain/gomd/gomd"
-	"{{AppName}}/{{AppRoot}}/{{SingularLowerName}}/validation"
-	"{{AppName}}/{{AppRoot}}/{{SingularLowerName}}/services"
+	"github.com/JubaerHossain/gomd/services/user/validation"
+	"github.com/JubaerHossain/gomd/services/user/services"
 	"net/http"
 )
-func {{TitleName}}Index() gin.HandlerFunc {
+func UserIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
         page := c.DefaultQuery("page", "1")
         limit := c.DefaultQuery("limit", "10")
@@ -18,18 +18,18 @@ func {{TitleName}}Index() gin.HandlerFunc {
         filter["limit"] = limit
         filter["status"] = status
 
-        {{PluralLowerName}}, paginate := services.All{{TitleName}}(filter)
+        users, paginate := services.AllUser(filter)
 
-        gomd.Res.Code(200).Data({{PluralLowerName}}).Raw(map[string]interface{}{
+        gomd.Res.Code(200).Data(users).Raw(map[string]interface{}{
             "meta": paginate,
         }).Json(c)
 	}
 }
 
 
-func {{TitleName}}Create() gin.HandlerFunc {
+func UserCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var create{{TitleName}} validation.Create{{TitleName}}Request
+		var createUser validation.CreateUserRequest
 
 		defer func() {
 			if err := recover(); err != nil {
@@ -37,19 +37,19 @@ func {{TitleName}}Create() gin.HandlerFunc {
 			}
 		}()
 
-		if err := c.ShouldBind(&create{{TitleName}}); err != nil {
+		if err := c.ShouldBind(&createUser); err != nil {
 			gomd.Res.Code(http.StatusBadRequest).Message("Bad Request").Data(err.Error()).AbortWithStatusJSON(c)
 			return
 		}
 
-		{{SingularLowerName}} := services.CreateA{{TitleName}}(create{{TitleName}})
+		user := services.CreateAUser(createUser)
 
-		gomd.Res.Code(http.StatusCreated).Message("success").Data({{SingularLowerName}}).Json(c)
+		gomd.Res.Code(http.StatusCreated).Message("success").Data(user).Json(c)
 	}
 }
 
 
-func {{TitleName}}Show() gin.HandlerFunc {
+func UserShow() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -57,18 +57,18 @@ func {{TitleName}}Show() gin.HandlerFunc {
 			}
 		}()
 
-		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
+		userId := c.Param("userId")
 
-		{{SingularLowerName}} := services.A{{TitleName}}({{SingularLowerName}}Id)
+		user := services.AUser(userId)
 
-		gomd.Res.Code(http.StatusOK).Message("success").Data({{SingularLowerName}}).Json(c)
+		gomd.Res.Code(http.StatusOK).Message("success").Data(user).Json(c)
 	}
 }
 
 
-func {{TitleName}}Update() gin.HandlerFunc {
+func UserUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var update{{TitleName}} validation.Update{{TitleName}}Request
+		var updateUser validation.UpdateUserRequest
 
 		defer func() {
 			if err := recover(); err != nil {
@@ -76,26 +76,26 @@ func {{TitleName}}Update() gin.HandlerFunc {
 			}
 		}()
 
-		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
+		userId := c.Param("userId")
 
-		if err := c.ShouldBind(&update{{TitleName}}); err != nil {
+		if err := c.ShouldBind(&updateUser); err != nil {
 			gomd.Res.Code(http.StatusBadRequest).Message(http.StatusText(http.StatusBadRequest)).Data(err.Error()).AbortWithStatusJSON(c)
 			return
 		}
 
-		{{SingularLowerName}}, err := services.UpdateA{{TitleName}}({{SingularLowerName}}Id, update{{TitleName}})
+		user, err := services.UpdateAUser(userId, updateUser)
 
 		if err != nil {
 			gomd.Res.Code(http.StatusInternalServerError).Message(http.StatusText(http.StatusInternalServerError)).Json(c)
 			return
 		}
 
-		gomd.Res.Code(http.StatusOK).Message("Successfully Updated !!!").Data({{SingularLowerName}}).Json(c)
+		gomd.Res.Code(http.StatusOK).Message("Successfully Updated !!!").Data(user).Json(c)
 	}
 }
 
 
-func {{TitleName}}Delete() gin.HandlerFunc {
+func UserDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -103,8 +103,8 @@ func {{TitleName}}Delete() gin.HandlerFunc {
 			}
 		}()
 
-		{{SingularLowerName}}Id := c.Param("{{SingularLowerName}}Id")
-		err := services.DeleteA{{TitleName}}({{SingularLowerName}}Id)
+		userId := c.Param("userId")
+		err := services.DeleteAUser(userId)
 
 		if !err {
 			gomd.Res.Code(http.StatusInternalServerError).Message("something wrong").Json(c)

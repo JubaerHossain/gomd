@@ -12,19 +12,20 @@ import (
 )
 
 const (
-	AppRoot        = "app"
+	AppRoot        = "services"
 	ControllersDir = "controllers"
 	ModelsDir      = "models"
 	RoutesDir      = "routes"
 	ServicesDir    = "services"
 	ValidationDir  = "validation"
-	TemplateDir    = "template"
+	TemplateDir    = "../template"
+	RootDir        = "github.com/JubaerHossain/gomd"
 )
 
 var AppName string
 
 var CLI = &cobra.Command{
-	Use:  "gomd",
+	Use:  "create",
 	Args: cobra.MinimumNArgs(2),
 	RunE: Run,
 }
@@ -33,7 +34,6 @@ func Run(cmd *cobra.Command, args []string) error {
 	if len(args) < 2 {
 		return errors.New("not enough arguments")
 	}
-
 	AppName = args[0]
 	name := args[1]
 	fs := afero.NewBasePathFs(afero.NewOsFs(), AppRoot+"/")
@@ -47,6 +47,7 @@ func Run(cmd *cobra.Command, args []string) error {
 }
 
 func createFolders(fs afero.Fs, name string) error {
+	fs.Mkdir(name, 0755)
 	dirs := []string{ControllersDir, ModelsDir, RoutesDir, ServicesDir, ValidationDir}
 	for _, dir := range dirs {
 		if err := fs.Mkdir(path.Join(name, dir), 0755); err != nil {
@@ -98,10 +99,11 @@ func overwrite(file string, message string) error {
 }
 
 func replaceStub(content string, name string) string {
+
 	content = strings.Replace(content, "{{TitleName}}", Title(name), -1)
 	content = strings.Replace(content, "{{PluralLowerName}}", Lower(Plural(name)), -1)
 	content = strings.Replace(content, "{{SingularLowerName}}", Lower(Singular(name)), -1)
-	content = strings.Replace(content, "{{AppName}}", AppName, -1)
+	content = strings.Replace(content, "{{AppName}}", RootDir, -1)
 	content = strings.Replace(content, "{{AppRoot}}", AppRoot, -1)
 	return content
 }

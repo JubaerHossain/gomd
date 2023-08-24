@@ -1,9 +1,9 @@
-package gomd
+package cli
 
 import (
 	"fmt"
 
-	"github.com/JubaerHossain/gomd/cli"
+	"github.com/JubaerHossain/gomd/cli/create"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ func AddCommand(command *cobra.Command) {
 }
 
 func init() {
-	command.AddCommand(cli.Create)
+	command.AddCommand(create.Create)
 }
 
 // run is the main function to execute the gomd command

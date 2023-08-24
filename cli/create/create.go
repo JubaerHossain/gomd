@@ -1,4 +1,4 @@
-package cli
+package create
 
 import (
 	"errors"
@@ -19,7 +19,6 @@ const (
 	ServicesDir    = "services"
 	ValidationDir  = "validation"
 	TemplateDir    = "../template"
-	RootDir        = "github.com/JubaerHossain/gomd"
 )
 
 var AppName string
@@ -103,7 +102,7 @@ func replaceStub(content string, name string) string {
 	content = strings.Replace(content, "{{TitleName}}", Title(name), -1)
 	content = strings.Replace(content, "{{PluralLowerName}}", Lower(Plural(name)), -1)
 	content = strings.Replace(content, "{{SingularLowerName}}", Lower(Singular(name)), -1)
-	content = strings.Replace(content, "{{AppName}}", RootDir, -1)
+	content = strings.Replace(content, "{{AppName}}", AppName, -1)
 	content = strings.Replace(content, "{{AppRoot}}", AppRoot, -1)
 	return content
 }

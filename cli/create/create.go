@@ -18,7 +18,7 @@ const (
 	RoutesDir      = "routes"
 	ServicesDir    = "services"
 	ValidationDir  = "validation"
-	TemplateDir    = "../template"
+	TemplateDir    = "../../template"
 )
 
 var AppName string
